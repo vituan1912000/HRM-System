@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+  
+  <context:component-scan base-package="controller" />
+  
+  <bean
+    class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix">
+      <value>/WEB-INF/views/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  	<mvc:annotation-driven />
+	<mvc:resources location="/assets/" mapping="/assets/**"/>
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+  		<property name="url" value="jdbc:sqlserver://localhost:1433;databaseName=SAD_Project"></property>
+  		<property name="username" value="vituan191"></property>
+  		<property name="password" value="Vituan191"></property>
+  </bean>
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+  		<property name="dataSource" ref="dataSource"></property>
+  		<property name="packagesToScan" value="entities"></property>
+  		<property name="hibernateProperties">
+  			<props>
+  				<prop key="hibernate.show_sql">true</prop>
+  				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</prop>
+  			</props>
+  		</property>
+  </bean>   
+  <bean id="employeeDAO" class="dao.EmployeeDAOImpl">
+  		<property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+    <bean id="departmentDao" class="dao.DepartmentDaoImpl">
+  		<property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+   <bean id="jobDao" class="dao.JobDaoImpl">
+  		<property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+    <bean id="messageDao" class="dao.MessageDaoImpl">
+  		<property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+  <bean id="accountDao" class="dao.AccountDaoimpl">
+  		<property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+  
+</beans>
